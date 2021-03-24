@@ -1,5 +1,5 @@
 """
-Purpose: Read, modify and write the STR files using the PNMRSTR utility to replace the symlink's in _experiment_file loop
+Purpose: Read, modify and write the STR files using the PYNMRSTAR utility to replace the symlink's in _experiment_file loop
 """
 
 from pathlib import Path
