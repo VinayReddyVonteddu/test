@@ -33,7 +33,7 @@ for entryid in os.listdir(metabolomics):
             path = os.path.join(eid_path, dir_path, file_path)
             # Assign the original link to path_link
             path_link = Path(path).resolve()
-            path_link_uri = path_link.as_uri().replace("file://", "")
+            path_link_uri = str(path_link)
             # condition to check if path is symlink
             if path_link_uri != path:
                 logging.info("SYM LINK FOUND %s - > %s ", path, path_link_uri)
