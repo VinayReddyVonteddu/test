@@ -44,6 +44,6 @@ for entryid in os.listdir(metabolomics):
                 dt[nameIndex] = path_link.name
                 dt[directoryIndex] = dir_link
         fl.validate()
-    link_path = "./link_directories/" + entryid + "/"
+    link_path = os.path.join("./link_directories", entryid)
     os.makedirs(link_path)
-    entry.write_to_file(link_path + entryid + ".str")
+    entry.write_to_file(os.path.join(link_path, entryid + ".str"))
