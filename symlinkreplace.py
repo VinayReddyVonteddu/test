@@ -37,7 +37,9 @@ for entryid in os.listdir(metabolomics):
             # condition to check if path is symlink
             if path_link_uri != path:
                 logging.info("SYM LINK FOUND %s - > %s ", path, path_link_uri)
-                # Assign the parent of the path_link to the dir_link as URI which is after /entry id/ 
+                # Assign the parent of the path_link to the dir_link as URI which is after /entry id/
+                # Please change this next line to use the built in path splitting functions rather than manually
+                # chunking the path. For example: https://stackoverflow.com/a/3167684
                 dir_link = path_link.parent.as_uri().split(entryid + "/")[1] + "/"
                 logging.info("SYM LINK RESOLVED %s, %s", dir_link, path_link.name)
                 # Assign name and directory path
