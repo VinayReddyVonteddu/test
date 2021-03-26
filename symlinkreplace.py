@@ -2,20 +2,20 @@
 Purpose: Read, modify and write the STR files using the PYNMRSTAR utility to replace the symlink's in _experiment_file loop
 """
 
-from pathlib import Path
-import pynmrstar
-import json
-import os
-
 import logging
+import os
+from pathlib import Path
+
+import pynmrstar
+
 logging.basicConfig(level=logging.INFO)
 
 metabolomics = "/projects/BMRB/public/entry_directories/metabolomics/"
 for entryid in os.listdir(metabolomics):
-    #Concatenate the path with entry ID(ex:bsme000xxxx)
+    # Concatenate the path with entry ID(ex:bsme000xxxx)
     eid_path = os.path.join(metabolomics, entryid)
-    eid_file  = os.path.join(eid_path, entryid + ".str")
-    #Verify if the path exists
+    eid_file = os.path.join(eid_path, entryid + ".str")
+    # Verify if the path exists
     if not os.path.isdir(eid_path) or not os.path.exists(eid_file):
         continue
 
@@ -31,20 +31,21 @@ for entryid in os.listdir(metabolomics):
             dir_path = dt[directoryIndex]
             file_path = dt[nameIndex]
             path = os.path.join(eid_path, dir_path, file_path)
-            #Assign the original link to path_link
+            # Assign the original link to path_link
             path_link = Path(path).resolve()
-            path_link_uri = path_link.as_uri().replace("file://", "")
-            #condition to check if path is symlink
+            path_link_uri = str(path_link)
+            # condition to check if path is symlink
             if path_link_uri != path:
                 logging.info("SYM LINK FOUND %s - > %s ", path, path_link_uri)
-                # Assign the parent of the path_link to the dir_link as URI which is after /entry id/ 
+                # Assign the parent of the path_link to the dir_link as URI which is after /entry id/
+                # Please change this next line to use the built in path splitting functions rather than manually
+                # chunking the path. For example: https://stackoverflow.com/a/3167684
                 dir_link = path_link.parent.as_uri().split(entryid + "/")[1] + "/"
                 logging.info("SYM LINK RESOLVED %s, %s", dir_link, path_link.name)
                 # Assign name and directory path
                 dt[nameIndex] = path_link.name
                 dt[directoryIndex] = dir_link
         fl.validate()
-    link_path = "./link_directories/" + entryid + "/"
+    link_path = os.path.join("./link_directories", entryid)
     os.makedirs(link_path)
-    entry.write_to_file(link_path + entryid + ".str")
-
+    entry.write_to_file(os.path.join(link_path, entryid + ".str"))
