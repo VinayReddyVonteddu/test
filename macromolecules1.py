@@ -1,7 +1,6 @@
 '''This program verifies the symlinks in entrylists/nmrstar3.1 and if they are pointing .str files in /entry_directories/macromolecules/entry_id folder. 
 If they are pointing to nothing, delete the symlink.  If there is no symlink for entry, create the symlink in the entry_lists.'''
 from pathlib import Path
-import shutil
 import json
 import os
 
